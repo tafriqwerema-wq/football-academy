@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stars of Tomorrow Academy | Professional Elite Football</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.15);
+            --accent: #00f2fe;
+            --gold: #ffd700;
+        }
+
+        /* Scroll Snapping - One Page at a Time */
+        html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+
+        body {
+            background: linear-gradient(-45deg, #050a0e, #102a33, #081a24, #000000);
+            background-size: 400% 400%;
+            animation: liquidFlow 15s ease infinite;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        @keyframes liquidFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* Entry Screen */
+        #entry-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #050a0e; z-index: 9999; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            transition: 1.5s ease;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; display: flex;
+            justify-content: center; gap: 15px; padding: 20px; z-index: 1000;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(15px);
+        }
+        nav a { color: white; text-decoration: none; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; transition: 0.4s; }
+        nav a:hover { opacity: 1; color: var(--accent); }
+
+        /* General Section Styling */
+        section { height: 100vh; display: flex; align-items: center; justify-content: center; scroll-snap-align: start; padding: 20px; }
+
+        .glass-panel {
+            background: var(--glass); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border); border-radius: 40px; padding: 40px;
+            width: 100%; max-width: 650px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        h1 { font-weight: 700; font-size: clamp(1.5rem, 6vw, 2.5rem); letter-spacing: 3px; margin-bottom: 20px; color: var(--accent); }
+        h2 { font-weight: 400; margin-bottom: 20px; color: var(--gold); }
+        p { font-weight: 200; line-height: 1.8; margin-bottom: 15px; }
+
+        /* Countdown Clock */
+        #timer { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
+        .t-box { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; min-width: 70px; border: 1px solid var(--border); }
+        .t-num { display: block; font-size: 1.5rem; font-weight: 700; }
+        .t-lab { font-size: 0.6rem; text-transform: uppercase; opacity: 0.7; }
+
+        /* Coach Profile */
+        .coach-flex { display: flex; align-items: center; gap: 20px; text-align: left; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 20px; }
+        .coach-icon { font-size: 3.5rem; color: var(--accent); }
+
+        /* Registration Form */
+        input, select, .btn {
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px;
+            border: 1px solid var(--border); background: rgba(255,255,255,0.05);
+            color: white; outline: none; font-size: 0.9rem;
+        }
+        .btn { background: var(--accent); color: #000; font-weight: 700; border: none; cursor: pointer; text-transform: uppercase; transition: 0.4s; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3); }
+
+        /* THE SHINY PAYBILL PAGE */
+        .pay-page { background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(0,0,0,0.5)); border: 3px solid var(--gold); position: relative; overflow: hidden; }
+        .pay-page::after {
+            content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg); animation: sweep 5s infinite;
+        }
+        @keyframes sweep { 0% { transform: translate(-100%, -100%) rotate(45deg); } 100% { transform: translate(100%, 100%) rotate(45deg); } }
+
+        /* Floating WhatsApp Icon */
+        .wa-link {
+            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
+            background: #25d366; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 35px;
+            color: white; text-decoration: none; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* Volume Control */
+        #music-control { position: fixed; bottom: 30px; left: 30px; z-index: 5000; background: var(--glass); padding: 12px; border-radius: 50%; cursor: pointer; border: 1px solid var(--border); color: white; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .glass-panel { padding: 30px 20px; width: 95%; }
+            nav { gap: 8px; padding: 15px; }
+            nav a { font-size: 0.55rem; }
+            .coach-flex { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="entry-overlay">
+        <h1 style="color: white; margin-bottom: 20px;">STARS OF TOMORROW</h1>
+        <button class="btn" style="width: auto; padding: 15px 40px;" onclick="startAcademy()">Enter Academy</button>
+    </div>
+
+    <audio id="bg-jazz" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-thejazzpiano.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="music-control" onclick="toggleJazz()"><i class="fas fa-volume-up"></i></div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#legacy">Legacy</a>
+        <a href="#coach">Coach</a>
+        <a href="#register">Register</a>
+        <a href="#payment">Payment</a>
+    </nav>
+
+    <section id="home">
+        <div class="glass-panel">
+            <h1>STARS OF TOMORROW</h1>
+            <p>Training starts at 3:30 PM. Countdown to next session:</p>
+            <div id="timer">
+                <div class="t-box"><span class="t-num" id="h">00</span><span class="t-lab">Hours</span></div>
+                <div class="t-box"><span class="t-num" id="m">00</span><span class="t-lab">Mins</span></div>
+                <div class="t-box"><span class="t-num" id="s">00</span><span class="t-lab">Secs</span></div>
+            </div>
+            <p style="font-size: 0.9rem; letter-spacing: 1px;"><i class="fas fa-map-marker-alt"></i> Star Sheik | CF Park | Gimu Estate</p>
+        </div>
+    </section>
+
+    <section id="legacy">
+        <div class="glass-panel">
+            <h2>The Team Legacy</h2>
+            <p>"We are more than an academy; we are a family. Our legacy is built on the quiet discipline of training and the loud joy of success. We nurture the star within every child, teaching them that tomorrow belongs to those who prepare today."</p>
+            <p style="font-size: 0.8rem; font-style: italic; color: var(--accent);">— Excellence. Passion. Discipline. —</p>
+        </div>
+    </section>
+
+    <section id="coach">
+        <div class="glass-panel">
+            <h2>Lead Instructor</h2>
+            <div class="coach-flex">
+                <div class="coach-icon"><i class="fas fa-user-circle"></i></div>
+                <div>
+                    <h3>Coach Joshua Muneeni</h3>
+                    <p>Building the technical foundation and tactical intelligence of Kenya's future football stars.</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: flex; justify-content: space-around; font-size: 0.8rem;">
+                <span><i class="fas fa-check-circle"></i> Technical Drill</span>
+                <span><i class="fas fa-check-circle"></i> Mentorship</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="register">
+        <div class="glass-panel">
+            <h2>Online Registration</h2>
+            <form action="https://formspree.io/f/joshuamuneeni10@gmail.com" method="POST">
+                <input type="text" name="name" placeholder="Player Full Name" required>
+                <select name="location" required>
+                    <option value="">Select Pitch Location</option>
+                    <option>Star Sheik Academy School</option>
+                    <option>CF Park (Greatwall Gardens)</option>
+                    <option>Gimu Estate</option>
+                </select>
+                <input type="tel" name="phone" placeholder="Parent Contact Number" required>
+                <button type="submit" class="btn">Register Athlete</button>
+            </form>
+            <p style="font-size: 0.7rem; margin-top: 10px; opacity: 0.6;">Direct email to: joshuamuneeni10@gmail.com</p>
+        </div>
+    </section>
+
+    <section id="payment">
+        <div class="glass-panel pay-page">
+            <h2 style="color: white;">Membership Investment</h2>
+            <p>Professional Coaching for 8 Sessions</p>
+            <h1 style="font-size: 3.5rem; color: var(--gold); margin: 20px 0;">KSH 1,000</h1>
+            <div style="border-top: 1px solid var(--border); padding-top: 20px;">
+                <p>LIPA NA MPESA PAYBILL</p>
+                <h1 style="letter-spacing: 8px; color: var(--gold);">4962120</h1>
+                <p style="font-size: 0.8rem;">Account: Use Student Name</p>
+            </div>
+        </div>
+    </section>
+
+    <a href="https://wa.me/254727130060" class="wa-link" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        const jazz = document.getElementById('bg-jazz');
+        
+        function startAcademy() {
+            document.getElementById('entry-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('entry-overlay').style.display = 'none';
+                jazz.play();
+                jazz.volume = 0.3;
+            }, 1000);
+        }
+
+        function toggleJazz() {
+            if (jazz.paused) { jazz.play(); document.getElementById('music-control').innerHTML = '<i class="fas fa-volume-up"></i>'; }
+            else { jazz.pause(); document.getElementById('music-control').innerHTML = '<i class="fas fa-volume-mute"></i>'; }
+        }
+
+        // 3:30 PM Countdown Logic
+        function runTimer() {
+            const now = new Date();
+            let target = new Date();
+            target.setHours(15, 30, 0, 0);
+            if (now > target) target.setDate(target.getDate() + 1);
+
+            const diff = target - now;
+            const h = Math.floor(diff / (1000 * 60 * 60));
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('h').innerText = h < 10 ? '0'+h : h;
+            document.getElementById('m').innerText = m < 10 ? '0'+m : m;
+            document.getElementById('s').innerText = s < 10 ? '0'+s : s;
+        }
+        setInterval(runTimer, 1000);
+        runTimer();
+    </script>
+</body>
+</html>
